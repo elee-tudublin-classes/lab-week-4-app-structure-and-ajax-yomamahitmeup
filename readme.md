@@ -28,7 +28,7 @@ Start by cloning this repository and opening in VS Code.
 
 3. Install dependencies
 
-   `pip install fastapi uvicorn['standard'] jinja2 python-multipart httpx`
+   `pip install fastapi uvicorn jinja2 python-multipart httpx`
 
 4. Setup the `.env` file, e.g. based on `.env.example`
 
