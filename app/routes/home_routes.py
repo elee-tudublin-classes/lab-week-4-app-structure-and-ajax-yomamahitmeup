@@ -15,23 +15,32 @@ config = Config(".env")
 templates = Jinja2Templates(directory="app/view_templates")
 
 # define a router instance
-router = APIRouter()
+router = APIRouter()    
+
 
 
 ###############################################################################################################
 
 
 #Add the routes.
-handle http get requests for the site root /
+
+#handle http get requests for the site root /
 # return the index.html page
 @router.get("/", response_class=HTMLResponse)
 async def index(request: Request):
 
-    # get current date and time
-    serverTime: datetime = datetime.now().strftime("%d/%m/%y %H:%M:%S")
+
+
+# get current date and time
+    serverTime: datetime = datetime.now().strftime("%d/%m/%y %H:%M:%S")  
+
+
+
+
+
 
     # note passing of parameters to the page
-    return templates.TemplateResponse("index.html", {"request": request, "serverTime": serverTime })
+    return templates.TemplateResponse("index.html", {"request": request, "serverTime": serverTime})
 
 @router.get("/advice", response_class=HTMLResponse)
 async def advice(request: Request):
@@ -51,6 +60,16 @@ async def apod(request: Request):
     response = await requests_client.get(config("NASA_APOD_URL") + config("NASA_API_KEY"))
     return templates.TemplateResponse("apod.html", {"request": request, "data": response.json() })
 
+@router.get("/server_time", response_class=HTMLResponse)
+async def index(request: Request):
+
+# get current date and time
+    serverTime: datetime = datetime.now().strftime("%d/%m/%y %H:%M:%S")
+
+    #send response
+    return serverTime 
+
+
 
 
 # https://www.getorchestra.io/guides/mastering-query-parameters-in-fastapi-a-detailed-tutorial
@@ -58,4 +77,10 @@ async def apod(request: Request):
 async def params(request: Request, name : str | None = ""):
     return templates.TemplateResponse("params.html", {"request": request, "name": name })
 
+
+#Add a route to handle /clicked
+@router.post("/clicked", response_class=HTMLResponse)
+async def clicked(request: Request):
+    # note passing of parameters to the page
+    return templates.TemplateResponse("./partials/clicked_button.html", {"request": request })
 
