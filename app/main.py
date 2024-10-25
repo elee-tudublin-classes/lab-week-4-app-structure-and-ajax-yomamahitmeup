@@ -4,10 +4,13 @@ import httpx
 from contextlib import asynccontextmanager
 
 from app.routes.home_routes import router as home_router
+from app.routes.todo_routes import router as todo_router
+
 
 main_router = APIRouter()
 
 main_router.include_router(home_router)
+main_router.include_router(todo_router, prefix="/todo", tags=["todo"])
 
 
 # https://stackoverflow.com/questions/71031816/how-do-you-properly-reuse-an-httpx-asyncclient-within-a-fastapi-application
@@ -30,3 +33,9 @@ app.mount(
     StaticFiles(directory="app/static"),
     name="static",
 )
+
+
+##### adds the routes to the app instance, allowing it to handle requests.----------
+# include routes in app
+app.include_router(main_router)
+
